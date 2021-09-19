@@ -8,9 +8,23 @@ const io = new Server(server, {
     cors: { origin: "*" }
 });
 
-let cardData = [];
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    let state = [];
 
-let playerData = [];
+    socket.on('newGame', message => {
+        state = newGame(message);
+        io.emit("gameData", state);
+    });
+
+    socket.on("playCard", data => {
+        const player = data.player;
+        const cards = new Set(data.cards)
+        io.emit("newState", playCard(state, player, cards));
+    })
+
+});
+
 // {
 //     player: {
 //         id: Number,
@@ -18,9 +32,21 @@ let playerData = [];
 //     }
 // }
 
+const playCard = (state, player, cards) => {
+    const playedCards = [];
+    state.forEach(playerData => {
+        if (playerData.playerId === player) {
+            playerData.cards = playerData.cards.filter(card => { 
+                cards.has(card) && playedCards.push(card)
+                return !cards.has(card)
+            })
+        }
+    })
+    return {state, playedCards} 
+}
 
 const generateNewDeck = () => {
-    let newDeck = [];
+    const newDeck = [];
     ["S", "H", "C", "D"].forEach(suite => {
         ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"].forEach(value =>  {
             newDeck.push(value + suite);
@@ -41,6 +67,7 @@ const deal = (newDeck, players) => {
     //         cards: []
     //     }
     // ]
+    const playerData = [];
     
     players.forEach(player => {
         const newPlayer = {};
@@ -49,7 +76,7 @@ const deal = (newDeck, players) => {
         playerData.push(newPlayer)
     }) 
 
-    for (const i = 0; i < 52; i++) {
+    for (let i = 0; i < 52; i++) {
         const random = Math.floor(Math.random() * newDeck.length);
         const card = newDeck[random];
         newDeck.splice(random, 1);
@@ -61,26 +88,11 @@ const deal = (newDeck, players) => {
 }
 
 const newGame = (players) => {
-    playerData = [];
     const newDeck = generateNewDeck();
     const playerData = deal(newDeck, players);
     return playerData
 }
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    socket.on('ping', (ping) => {
-        console.log(ping);
-        io.emit("response", "We received your ping!");
-    });
-
-    socket.on('newGame', message => {
-        const data = newGame(message.players);
-        io.emit("gameData", data);
-    });
-
-});
 
 
 
