@@ -1,10 +1,10 @@
 import './App.scss';
-import Table from "./views/Table"
+import Test from "./views/Test"
 
 function App() {
   return (
     <div className="App">
-        <Table />
+        <Test />
     </div>
   );
 }

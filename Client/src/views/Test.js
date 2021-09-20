@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { socket } from "../services/socket";
 
-function Table() {
+function Test() {
     const [data, setData] = useState({
         playerData: [],
         playedCards: []
     });
     const [playerInput, setPlayerInput] = useState("");
     const [cardsInput, setCardsInput] = useState("");
+    const [currentPlayer, setCurrentPlayer] = useState("01");
     // {
     //     playerData: [
     //         {
@@ -43,10 +44,6 @@ function Table() {
         socket.emit("newGame", ["01", "02", "03", "04"]);
     }, [])
 
-    const handleClick = () => {
-        console.log(data.playerData)
-    }
-
     const handlePlay = () => {
         socket.emit("newGame", ["01", "02", "03", "04"]);
     }
@@ -54,12 +51,16 @@ function Table() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const cards = cardsInput.split(" ")
-        socket.emit("playCard", {player: playerInput, cards})
+        socket.emit("playCard", {player: currentPlayer, cards})
+        setCardsInput("");
+    }
+    const switchPlayers = () => {
+        setCurrentPlayer(playerInput)
+        setPlayerInput("");
     }
 
     return (
         <div>
-            <button onClick={handleClick}>Ping!</button>
             <div>
                 Welcome to Big 2!
             </div>
@@ -75,7 +76,9 @@ function Table() {
                     data.playerData.map(player => (
                         <div key={player.playerId}>
                             {player.playerId} : {player.cards.map(card => (
-                                <span key={card}>{`${card}, `}</span>
+                                player.playerId === currentPlayer ?
+                                    <span key={card}>{`${card}, `}</span> :
+                                    <span key={card}>*</span>
                             ))}
                         </div>
                     ))
@@ -84,13 +87,14 @@ function Table() {
             <div>
                 play a card!:
                 <form onSubmit={handleSubmit}>
-                    player: <input type="text" name="player" value={playerInput} onChange={(e) => setPlayerInput(e.target.value)} />
                     card/s: <input type="text" name="cards" value={cardsInput} onChange={(e)=> setCardsInput(e.target.value)} />
                     <button>Submit!</button>
                 </form>
+                player: {currentPlayer} <input type="text" name="player" value={playerInput} onChange={(e) => setPlayerInput(e.target.value)} />
+                <button onClick={switchPlayers} >Switch Players!</button>
             </div>
         </div>
     )
 }
 
-export default Table
+export default Test
