@@ -76,9 +76,9 @@ function Test() {
                     data.playerData.map(player => (
                         <div key={player.playerId}>
                             {player.playerId} : {player.cards.map(card => (
-                                player.playerId === currentPlayer ?
-                                    <span key={card}>{`${card}, `}</span> :
-                                    <span key={card}>*</span>
+                                player.playerId === currentPlayer 
+                                    ? <span key={card}>{`${card}, `}</span> 
+                                    : <span key={card}>*</span>
                             ))}
                         </div>
                     ))
