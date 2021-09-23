@@ -1,10 +1,10 @@
-import './App.scss';
-import Test from "./views/Test"
+import "./App.scss";
+import Test from "./views/Test";
 
 function App() {
   return (
     <div className="App">
-        <Test />
+      <Test />
     </div>
   );
 }
