@@ -7,7 +7,6 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.4",
-    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
@@ -21,7 +20,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint src/**/*.{ts,tsx}",
     "lint:fix": "eslint --fix src/**/*.{js,jsx}",
-    "format": "prettier --write 'src/**/*.{js,jsx,css,scss,json,md}' && eslint --fix src/**/*.{js,jsx}"
+    "format": "prettier --write 'src/**/*.{js,jsx,css,scss,json,md}' && eslint --fix src/**/*.{js,jsx}",
+    "sass" : "sass src/scss:src/css --watch --no-source-map"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +46,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.26.0",
-    "prettier": "2.4.1"
+    "prettier": "2.4.1",
+    "sass": "^1.42.1"
   }
 }

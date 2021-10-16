@@ -1,4 +1,4 @@
-import './App.scss';
+import './css/styles.css';
 import Test from './views/Test';
 
 function App() {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { socket } from '../services/socket';
 
+
 function Test() {
     const [data, setData] = useState({
         playerData: [],
@@ -59,7 +60,7 @@ function Test() {
 
     return (
         <div>
-            <div>Welcome to Big 2!</div>
+            <div className="heading" >Welcome to Big 2!</div>
             <div>
                 <button onClick={handlePlay}>Play!</button>
             </div>
